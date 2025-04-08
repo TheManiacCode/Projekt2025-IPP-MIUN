@@ -1,0 +1,2 @@
+Uhh, please mail/contact me before making a contribution. I would love examples from other projects with arduinos to help me with the project however I am trying to do this project solo. 
+The project is a 30 seconds timer in a automatic watertap to encourage people to wash their hands for longer. The timer will be counting down from 30 and there will be a report about this project released in the summer.
