@@ -7,8 +7,12 @@ void setup() {
 
 void loop() {
   int distance = sonar.ping_cm();
-  Serial.print("Distance= ");
-  Serial.print(distance);
-  Serial.println(" cm");
   delay(500);
+
+  if (distance <= 400)
+  {
+    Serial.print("Distance= ");
+    Serial.print(distance);
+    Serial.println(" cm");
+  }
 }
