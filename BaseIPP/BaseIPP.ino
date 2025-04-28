@@ -2,7 +2,7 @@
 
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
-#define BUTTON_PIN A0 // Knapparna är anslutna till analog pin A0
+#define BUTTON_PIN A0
 
 void setup() {
     lcd.begin(16, 2);
@@ -14,7 +14,7 @@ void setup() {
 void loop() {
     int buttonValue = analogRead(BUTTON_PIN);
 
-    if (buttonValue < 100) { // Justering beroende på vilken knapp som används
+    if (buttonValue < 100) {
         startTimer();
     }
 }
