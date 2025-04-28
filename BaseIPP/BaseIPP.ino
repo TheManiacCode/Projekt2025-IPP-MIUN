@@ -3,12 +3,12 @@
 #include <NewPing.h>
 
 Olimex16x2 lcd;
-const unsigned int TRIG_PIN = 13;
-const unsigned int ECHO_PIN = 12;
-const  unsigned int BAUD_RATE=9600;
 bool finishTimer = false;
-NewPing sonar(3,2,200);
-int distance;
+//const unsigned int TRIG_PIN = 13;
+//const unsigned int ECHO_PIN = 12;
+//const unsigned int BAUD_RATE=9600;
+//NewPing sonar(3,2,200);
+//int distance;
 
 void setup() 
 {
@@ -17,20 +17,21 @@ void setup()
     lcd.clear();
     lcd.drawLine(0, "ta fram handerna");
     lcd.drawLine(1, "for att starta");
-    Serial.begin(BAUD_RATE);
+    //Serial.begin(BAUD_RATE);
 
 }
 
 void loop() 
 {
-    while (distance != -5)
+    /*if (distance > 0 && distance <= 8) 
     {
-        getDistance();
-    }
-    if (distance > 0 && distance <= 8 || lcd.readButton(0)) 
+        startTimer();
+    }*/
+    if (lcd.readButton(0))
     {
         startTimer();
     }
+    //getDistance();
     if (finishTimer)
     {
         lcd.clear();
@@ -51,13 +52,13 @@ void startTimer()
     {
         lcd.clear();
         lcd.drawLine(0, " Timer: " + String(i)); 
-    short tmp = i/3;
+    short prgrsCnt = i/3;
         String progressBar = " ";
-        for (short j = 0; j < tmp; j++) 
+        for (short j = 0; j < prgrsCnt; j++) 
         {
             progressBar += "#";
         }
-        while (i > 0 && tmp <= 0)
+        if (i > 0 && prgrsCnt <= 0)
         {
             progressBar = "#";
         }
@@ -69,7 +70,7 @@ void startTimer()
     }
     finishTimer = true;
 }
-void getDistance() 
+/*void getDistance() 
 {
     distance = sonar.ping_cm();
     if(distance)
@@ -84,4 +85,4 @@ void getDistance()
     }
     delay(500);
     distance;
-}
+}*/
