@@ -2,8 +2,11 @@
 #include <Olimex16x2.h>
 
 Olimex16x2 lcd;
+const unsigned int TRIG_PIN = 3;
+const unsigned int ECHO_PIN = 2;
 bool finishTimer = false;
-void setup() {
+void setup() 
+{
     lcd.begin();
     lcd.setBacklight(255);
     lcd.clear();
@@ -11,8 +14,11 @@ void setup() {
     lcd.drawLine(1, "for att starta");
     }
 
-void loop() {
-    if (lcd.readButton(0)) 
+void loop() 
+{
+    int distance = getDistance(TRIG_PIN, ECHO_PIN);
+
+    if (distance > 0 && distance <= 8 || lcd.readButton(0)) 
     {
         startTimer();
     }
@@ -29,9 +35,11 @@ void loop() {
     }
 }
 
-void startTimer() {
+void startTimer() 
+{
     short i;
-    for (i = 30; i >= 0; i--) {
+    for (i = 30; i >= 0; i--) 
+    {
         lcd.clear();
         lcd.drawLine(0, " Timer: " + String(i)); 
     short tmp = i/3;
@@ -40,7 +48,7 @@ void startTimer() {
         {
             progressBar += "#";
         }
-        if (i > 0 && tmp <= 0)
+        while (i > 0 && tmp <= 0)
         {
             progressBar = "#";
         }
@@ -51,4 +59,16 @@ void startTimer() {
         delay(200);
     }
     finishTimer = true;
+}
+int getDistance(int trigPin, int echoPin) 
+{
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+
+    unsigned long duration = pulseIn(echoPin, HIGH);
+    if (duration == 0) return 0; 
+    return duration / 29 / 2;
 }
