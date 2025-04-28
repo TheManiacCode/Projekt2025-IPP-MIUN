@@ -1,26 +1,30 @@
-#include <LiquidCrystal.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+#define LCD_ADDRESS 0x27  //0x3F vid fel adress
+#define BUTTON_PIN 2
 
-#define BUTTON_PIN A0
+LiquidCrystal_I2C lcd(LCD_ADDRESS, 16, 2);
 
-void setup() {
-    lcd.begin(16, 2);
-    lcd.clear();
+void setup() 
+{
+    lcd.init();
+    lcd.backlight();
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
     lcd.setCursor(0, 0);
     lcd.print("Tryck Start");
 }
 
 void loop() {
-    int buttonValue = analogRead(BUTTON_PIN);
-
-    if (buttonValue < 100) {
+    if (digitalRead(BUTTON_PIN) == LOW) 
+    { 
         startTimer();
     }
 }
 
 void startTimer() {
-    for (int i = 30; i >= 0; i--) {
+    for (int i = 30; i >= 0; i--) 
+    {
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Timer: ");
@@ -28,7 +32,8 @@ void startTimer() {
 
         lcd.setCursor(0, 1);
         int progress = map(i, 0, 30, 0, 16);
-        for (int j = 0; j < progress; j++) {
+        for (int j = 0; j < progress; j++) 
+        {
             lcd.print("#");
         }
 
