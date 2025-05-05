@@ -1,15 +1,15 @@
 #include <Arduino.h>
 #include <Olimex16x2.h>
-#include <NewPing.h>
+//#include <NewPing.h>
 
 Olimex16x2 lcd;
 bool finishTimer = false;
-//const unsigned int TRIG_PIN = 13;
-//const unsigned int ECHO_PIN = 12;
-//const unsigned int BAUD_RATE=9600;
-//NewPing sonar(3,2,200);
-//int distance;
-
+/*const unsigned int TRIG_PIN = 13;
+const unsigned int ECHO_PIN = 12;
+const unsigned int BAUD_RATE=9600;
+NewPing sonar(3,2,200);
+int distance;
+*/
 void setup() 
 {
     lcd.begin();
@@ -23,25 +23,25 @@ void setup()
 
 void loop() 
 {
-    /*if (distance > 0 && distance <= 8) 
+    /*
+    while (distance > 0)
     {
+        getDistance();
+        delay(5000);
+    }
+    if (distance > 0 && distance <= 8) 
+    {
+        distance = -1;
         startTimer();
-    }*/
+    }
+    */
     if (lcd.readButton(0))
     {
         startTimer();
     }
-    //getDistance();
     if (finishTimer)
     {
-        lcd.clear();
-        lcd.drawLine(0, "Bra skrubbat");
-        delay(500);
-        finishTimer = false;
-        lcd.clearLine(0);
-        lcd.clearLine(1);
-        lcd.drawLine(0, "tryck vanstra");
-        lcd.drawLine(1, "for att starta");
+        cleanDone();
     }
 }
 
@@ -69,11 +69,12 @@ void startTimer()
         delay(200);
     }
     finishTimer = true;
+    //getDistance();
 }
 /*void getDistance() 
 {
     distance = sonar.ping_cm();
-    if(distance)
+    if(distance == 0)
     {
         Serial.println("Warning: no pulse from sensor");
     }  
@@ -84,5 +85,16 @@ void startTimer()
         Serial.println(" cm");
     }
     delay(500);
-    distance;
-}*/
+}
+*/
+void cleanDone()
+{
+    lcd.clear();
+    lcd.drawLine(0, "Bra skrubbat");
+    delay(500);
+    finishTimer = false;
+    lcd.clearLine(0);
+    lcd.clearLine(1);
+    lcd.drawLine(0, "ta fram handerna");
+    lcd.drawLine(1, "for att starta");
+}
