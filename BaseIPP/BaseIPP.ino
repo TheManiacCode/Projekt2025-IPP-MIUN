@@ -1,15 +1,15 @@
 #include <Arduino.h>
 #include <Olimex16x2.h>
-//#include <NewPing.h>
+#include <NewPing.h>
 
 Olimex16x2 lcd;
 bool finishTimer = false;
-/*const unsigned int TRIG_PIN = 13;
-const unsigned int ECHO_PIN = 12;
-const unsigned int BAUD_RATE=9600;
-NewPing sonar(3,2,200);
-int distance;
-*/
+#define TRIGGER_PIN 3 
+#define ECHO_PIN 2     
+#define MAX_DISTANCE 200 
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+
 void setup() 
 {
     lcd.begin();
@@ -17,24 +17,17 @@ void setup()
     lcd.clear();
     lcd.drawLine(0, "ta fram handerna");
     lcd.drawLine(1, "for att starta");
-    //Serial.begin(BAUD_RATE);
-
+    Serial.begin(9600);
 }
 
 void loop() 
 {
-    /*
-    while (distance > 0)
+    int distance = sonar.ping_cm();
+    delay(200);
+    if (distance > 0 && distance <= 10) 
     {
-        getDistance();
-        delay(5000);
-    }
-    if (distance > 0 && distance <= 8) 
-    {
-        distance = -1;
         startTimer();
     }
-    */
     if (lcd.readButton(0))
     {
         startTimer();
@@ -44,7 +37,6 @@ void loop()
         cleanDone();
     }
 }
-
 void startTimer() 
 {
     short i;
@@ -63,30 +55,13 @@ void startTimer()
             progressBar = "#";
         }
         lcd.drawLine(1, progressBar);
-        delay(800);
+        delay(350);
         lcd.clearLine(0);
         lcd.clearLine(1);
-        delay(200);
+        delay(150);
     }
     finishTimer = true;
-    //getDistance();
 }
-/*void getDistance() 
-{
-    distance = sonar.ping_cm();
-    if(distance == 0)
-    {
-        Serial.println("Warning: no pulse from sensor");
-    }  
-    else
-    {
-        Serial.print("distance to nearest object:");
-        Serial.println(distance);
-        Serial.println(" cm");
-    }
-    delay(500);
-}
-*/
 void cleanDone()
 {
     lcd.clear();
